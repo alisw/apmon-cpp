@@ -42,6 +42,14 @@
 #pragma warning ( disable : 4290 )
 #endif
 
+#if __cplusplus < 201703L
+// C++17 does not allow dynamic exceptions (after years of deprecation)
+// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0003r4.html
+#define COND_THROW(...) throw(__VA_ARGS__)
+#else
+#define COND_THROW(...)
+#endif
+
 #ifndef apmon_utils_h
 #define apmon_utils_h
 
@@ -64,7 +72,7 @@ namespace apmon_utils {
    * @param lastModified The "Last-Modified" header that was received last time
    * the page was requested.
    */
-  bool urlModified(char *url, char *lastModified) throw(runtime_error);
+  bool urlModified(char *url, char *lastModified) COND_THROW(runtime_error);
 
  /**
   * Performs a HTTP request and puts the result into a temporary file.
@@ -74,13 +82,13 @@ namespace apmon_utils {
   * @return The size of the response received from the server, in bytes.
   */
   int httpRequest(char *url, const char *reqType, char *temp_filename) 
-    throw(runtime_error);
+    COND_THROW(runtime_error);
 
  /**
   * If "address" is a hostname, it returns the corresponding IP address;
   * if "address" is an IP address, it just returns a copy of the address.
   */
-  char *findIP(char *address) throw(runtime_error);
+  char *findIP(char *address) COND_THROW(runtime_error);
 
 
  /**
@@ -92,7 +100,7 @@ namespace apmon_utils {
   * @param identifier The determined file name (also an output parameter).
   */
   void parse_URL(char *url, char *hostname, int *port, char *identifier)
-    throw(runtime_error);
+    COND_THROW(runtime_error);
 
  /**
   * Frees the memory for a 2-dimensional character array.

@@ -37,7 +37,7 @@
 #include "ApMon.h"
 #include "utils.h"
 
-bool apmon_utils::urlModified(char *url, char *lastModified) throw(runtime_error) {
+bool apmon_utils::urlModified(char *url, char *lastModified) COND_THROW(runtime_error) {
   char temp_filename[300]; 
   FILE *tmp_file;
   bool lineFound;
@@ -106,7 +106,7 @@ bool apmon_utils::urlModified(char *url, char *lastModified) throw(runtime_error
 }  
 
 int apmon_utils::httpRequest(char *url, const char *reqType, char *temp_filename) 
-throw(runtime_error) {
+COND_THROW(runtime_error) {
   // the server from which we get the configuration file
   char hostname[MAX_STRING_LEN]; 
   // the name of the remote file
@@ -242,7 +242,7 @@ throw(runtime_error) {
   return totalSize;
 }
 
-char *apmon_utils::findIP(char *address) throw(runtime_error) {
+char *apmon_utils::findIP(char *address) COND_THROW(runtime_error) {
   int isIP = 1;
   char *destIP, *s;
   struct in_addr addr;
@@ -290,7 +290,7 @@ char *apmon_utils::findIP(char *address) throw(runtime_error) {
 
 
 void apmon_utils::parse_URL(char *url, char *hostname, int *port, char *identifier) 
-throw(runtime_error) {
+COND_THROW(runtime_error) {
     char protocol[MAX_STRING_LEN], scratch[MAX_STRING_LEN], *ptr=0, *nptr=0;
     char msg[MAX_STRING_LEN];
 

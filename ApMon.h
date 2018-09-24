@@ -82,6 +82,8 @@
 #ifndef ApMon_h
 #define ApMon_h
 
+#include <utils.h>
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
@@ -502,7 +504,7 @@ class ApMon {
    * the ports of the destination hosts, and also the passwords (see README 
    * for details about the structure of this file).
    */
-  ApMon(char *initsource) throw(runtime_error);
+  ApMon(char *initsource) COND_THROW(runtime_error);
   
 
   /**
@@ -510,7 +512,7 @@ class ApMon {
    * can be of the form hostname[:port] [passwd] or can be URLs from where the 
    * hostnames are to be read.
    */
-  ApMon(int nDestinations, char **destinationsList) throw(runtime_error);
+  ApMon(int nDestinations, char **destinationsList) COND_THROW(runtime_error);
 
   /**
    * Initializes an ApMon data structure, using arrays instead of a file.
@@ -523,7 +525,7 @@ class ApMon {
    * @param destPasswds The passwords for the MonALISA hosts.
    *
    */
-  ApMon(int nDestinations, char **destAddresses, int *destPorts, char **destPasswds) throw(runtime_error);
+  ApMon(int nDestinations, char **destAddresses, int *destPorts, char **destPasswds) COND_THROW(runtime_error);
 
   /**
    * ApMon destructor.
@@ -547,7 +549,7 @@ class ApMon {
    */
   int sendParameter(char *clusterName, char *nodeName,
 	       char *paramName, int valueType, char *paramValue)
-    throw(runtime_error);
+    COND_THROW(runtime_error);
 
   /**
    * Sends a parameter and its value to the MonALISA module, together with a 
@@ -568,7 +570,7 @@ class ApMon {
    */
   int sendTimedParameter(char *clusterName, char *nodeName,
 	      char *paramName, int valueType, char *paramValue, int timestamp)
-    throw(runtime_error);
+    COND_THROW(runtime_error);
 
   /**
    * Sends an integer parameter and its value to the MonALISA module. 
@@ -584,7 +586,7 @@ class ApMon {
    */
   int sendParameter(char *clusterName, char *nodeName,
 	       char *paramName, int paramValue)
-    throw(runtime_error);
+    COND_THROW(runtime_error);
 
   /**
    * Sends a parameter of type float and its value to the MonALISA module. 
@@ -600,7 +602,7 @@ class ApMon {
    */
   int sendParameter(char *clusterName, char *nodeName,
 	       char *paramName, float paramValue)
-    throw(runtime_error);
+    COND_THROW(runtime_error);
 
   /**
    * Sends a parameter of type double and its value to the MonALISA module. 
@@ -616,7 +618,7 @@ class ApMon {
    */
   int sendParameter(char *clusterName, char *nodeName,
 	       char *paramName, double paramValue)
-    throw(runtime_error);
+    COND_THROW(runtime_error);
 
   /**
    * Sends a parameter of type string and its value to the MonALISA module. 
@@ -632,7 +634,7 @@ class ApMon {
    */
   int sendParameter(char *clusterName, char *nodeName,
 	       char *paramName, char *paramValue)
-    throw(runtime_error);
+    COND_THROW(runtime_error);
 
 
   /**
@@ -649,7 +651,7 @@ class ApMon {
    */
   int sendParameters(char *clusterName, char *nodeName,
 	       int nParams, char **paramNames, int *valueTypes, 
-			 char **paramValues) throw(runtime_error);
+			 char **paramValues) COND_THROW(runtime_error);
 
   /**
    * Sends a set of parameters and their values to the MonALISA module, 
@@ -669,7 +671,7 @@ class ApMon {
    */
   int sendTimedParameters(char *clusterName, char *nodeName,
 	       int nParams, char **paramNames, int *valueTypes, 
-	       char **paramValues, int timestamp) throw(runtime_error);
+	       char **paramValues, int timestamp) COND_THROW(runtime_error);
 
   /**
    * Returns the value of the confCheck flag. If it is true, the 
@@ -823,13 +825,13 @@ class ApMon {
    * for this job in MonALISA.
    */
   void addJobToMonitor(long pid, char *workdir, char *clusterName,
-		       char *nodeName) throw(runtime_error);
+		       char *nodeName) COND_THROW(runtime_error);
 
   /**
    * Removes a job from the list of the jobs monitored by ApMon.
    * @param pid The pid of the job to be removed. 
    */
-  void removeJobToMonitor(long pid) throw(runtime_error);
+  void removeJobToMonitor(long pid) COND_THROW(runtime_error);
 
   /** This function is called by the user to set the cluster name and the node 
     name for the system monitoring datagrams.*/
@@ -864,11 +866,11 @@ class ApMon {
    * object is being constructed now). Else, only some structures will be 
    * reinitialized.
    */
-  void initialize(char *filename, bool firstTime) throw(runtime_error);
+  void initialize(char *filename, bool firstTime) COND_THROW(runtime_error);
 
   /** Initializes an ApMon object from a list with URLs and destination hosts. */
   void constructFromList(int nDestinations, char **destinationsList)
-    throw(runtime_error);
+    COND_THROW(runtime_error);
 
   /**
    * Initializes an ApMon object from a list with URLs and destination hosts.
@@ -878,7 +880,7 @@ class ApMon {
    * (the object is being constructed now). Else, only some structures will 
    * be reinitialized.
    */
-  void initialize(int nDestinations, char **destList, bool firstTime) throw(runtime_error);
+  void initialize(int nDestinations, char **destList, bool firstTime) COND_THROW(runtime_error);
 
 
   /**
@@ -893,7 +895,7 @@ class ApMon {
    * @param destPasswds Will contain the passwords for the destination hosts.
    */
   void loadFile(char *filename, int *nDestinations, char **destAddresses,
-		int *destPorts, char **destPasswds) throw(runtime_error);
+		int *destPorts, char **destPasswds) COND_THROW(runtime_error);
 
  
    /**
@@ -909,7 +911,7 @@ class ApMon {
    */
   void arrayInit(int nDestinations, char **destAddresses, int *destPorts,
 		 char **destPasswds)
-    throw(runtime_error);
+    COND_THROW(runtime_error);
 
   /**
    * Internal function that initializes an ApMon data structure.
@@ -926,7 +928,7 @@ class ApMon {
    */
   void arrayInit(int nDestinations, char **destAddresses, int *destPorts,
 		      char **destPasswds, bool firstTime)
-    throw(runtime_error);
+    COND_THROW(runtime_error);
 
   /**
    * Parses the string line, which has the form hostname:port, and
@@ -947,7 +949,7 @@ class ApMon {
    */
   void getDestFromWeb(char *url, int *nDestinations, char *destAddresses[], 
 		 int destPorts[], char *destPasswds[],
-		      ConfURLs& confURLs) throw(runtime_error);
+		      ConfURLs& confURLs) COND_THROW(runtime_error);
 
  
   /**
@@ -955,7 +957,7 @@ class ApMon {
    * called before sending the data over the newtork.
    */ 
   void encodeParams(int nParams, char **paramNames, int *valueTypes, 
-		 char **paramValues, int timestamp) throw(runtime_error);
+		 char **paramValues, int timestamp) COND_THROW(runtime_error);
 
   /** Initializes the monitoring configurations and the names of the parameters
    * included in the monitoring datagrams.
@@ -1031,14 +1033,14 @@ class ApMon {
   void parseXApMonLine(char *line);
 
   /** Initializes the UDP socket used to send the datagrams. */
-  void initSocket() throw(runtime_error);
+  void initSocket() COND_THROW(runtime_error);
 
   /** Parses the contents of a configuration file. The destination addresses
       and ports are stored in the arrays given as parameters.
   */
   void parseConf(FILE *fp, int *nDestinations, char **destAddresses, 
 		     int *destPorts, char **destPasswds)
-    throw(runtime_error);
+    COND_THROW(runtime_error);
 
   /**
    * Decides if the current datagram should be sent (so that the maximum

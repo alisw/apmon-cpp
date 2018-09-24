@@ -52,7 +52,7 @@ char boolStrings[][10] = {"false", "true"};
 //========= Implementations of the functions ===================
 
 ApMon::ApMon(char *initsource) 
-  throw(runtime_error) {
+  COND_THROW(runtime_error) {
 
   if (initsource == NULL)
     throw runtime_error("[ ApMon() ]  No conf file/URL provided");
@@ -76,7 +76,7 @@ ApMon::ApMon(char *initsource)
 }
 
 void ApMon::initialize(char *filename, bool firstTime) 
-  throw(runtime_error) {
+  COND_THROW(runtime_error) {
 
   char *destAddresses[MAX_N_DESTINATIONS];
   int destPorts[MAX_N_DESTINATIONS];
@@ -112,7 +112,7 @@ void ApMon::initialize(char *filename, bool firstTime)
 
 void ApMon::loadFile(char *filename, int *nDestinations, char **destAddresses, 
 		     int *destPorts, char **destPasswds)
-  throw(runtime_error) {
+  COND_THROW(runtime_error) {
   FILE *f;
   char msg[100];
  
@@ -131,12 +131,12 @@ void ApMon::loadFile(char *filename, int *nDestinations, char **destAddresses,
   fclose(f);
 }
 
-ApMon::ApMon(int nDestinations, char **destinationsList) throw(runtime_error){
+ApMon::ApMon(int nDestinations, char **destinationsList) COND_THROW(runtime_error){
   constructFromList(nDestinations, destinationsList);
 }
 
 void ApMon::constructFromList(int nDestinations, char **destinationsList)
-  throw(runtime_error) {
+  COND_THROW(runtime_error) {
   int i;
 
   if (destinationsList == NULL) 
@@ -163,7 +163,7 @@ void ApMon::constructFromList(int nDestinations, char **destinationsList)
 }
 
 void ApMon::initialize(int nDestinations, char **destinationsList,
-		       bool firstTime) throw(runtime_error) { 
+		       bool firstTime) COND_THROW(runtime_error) { 
   char *destAddresses[MAX_N_DESTINATIONS];
   int destPorts[MAX_N_DESTINATIONS];
   char *destPasswds[MAX_N_DESTINATIONS];
@@ -258,7 +258,7 @@ void ApMon::addToDestinations(char *line, int *nDestinations,
   
 void ApMon::getDestFromWeb(char *url, int *nDestinations, 
   char *destAddresses[], int destPorts[], char *destPasswds[],
-			   ConfURLs& confURLs) throw(runtime_error) {
+			   ConfURLs& confURLs) COND_THROW(runtime_error) {
   char temp_filename[300];
   FILE *tmp_file;
   char *line, *ret, *tmp = NULL;
@@ -351,7 +351,7 @@ void ApMon::getDestFromWeb(char *url, int *nDestinations,
 
 ApMon::ApMon(int nDestinations, char **destAddresses, int *destPorts, 
 	     char **destPasswds) 
-throw(runtime_error) {
+COND_THROW(runtime_error) {
   initMonitoring();
 
   arrayInit(nDestinations, destAddresses, destPorts, destPasswds);
@@ -359,14 +359,14 @@ throw(runtime_error) {
 
 void ApMon::arrayInit(int nDestinations, char **destAddresses, 
 		      int *destPorts, char **destPasswds) 
-  throw(runtime_error) {
+  COND_THROW(runtime_error) {
 	arrayInit(nDestinations, destAddresses, destPorts, destPasswds, true);
 }
 
 
 void ApMon::arrayInit(int nDestinations, char **destAddresses, int *destPorts,
 		      char **destPasswds, bool firstTime) 
-throw(runtime_error) {
+COND_THROW(runtime_error) {
   int i, j;
   int ret;
   char *ipAddr, logmsg[100];
@@ -622,14 +622,14 @@ void ApMon::freeConf() {
 
 int ApMon::sendParameters(char *clusterName, char *nodeName,
 	       int nParams, char **paramNames, int *valueTypes, 
-			 char **paramValues) throw(runtime_error){
+			 char **paramValues) COND_THROW(runtime_error){
  return sendTimedParameters(clusterName, nodeName, nParams, 
 			    paramNames, valueTypes, paramValues, -1);
 }
 
 int ApMon::sendTimedParameters(char *clusterName, char *nodeName,
 	       int nParams, char **paramNames, int *valueTypes, 
-	       char **paramValues, int timestamp) throw(runtime_error){
+	       char **paramValues, int timestamp) COND_THROW(runtime_error){
   int i;
   int ret, ret1, ret2;
   char msg[200], buf2[MAX_HEADER_LENGTH+4], newBuf[MAX_DGRAM_SIZE], crtAddr[128];
@@ -760,7 +760,7 @@ int ApMon::sendTimedParameters(char *clusterName, char *nodeName,
 
 int ApMon::sendParameter(char *clusterName, char *nodeName,
 			char *paramName, int valueType, char *paramValue) 
- throw(runtime_error){
+ COND_THROW(runtime_error){
 
   return sendParameters(clusterName, nodeName, 1, &paramName, 
 			      &valueType, &paramValue);
@@ -768,35 +768,35 @@ int ApMon::sendParameter(char *clusterName, char *nodeName,
 
 int ApMon::sendTimedParameter(char *clusterName, char *nodeName,
 	      char *paramName, int valueType, char *paramValue, int timestamp) 
- throw(runtime_error){
+ COND_THROW(runtime_error){
 
   return sendTimedParameters(clusterName, nodeName, 1, &paramName, 
 			      &valueType, &paramValue, timestamp);
 }
 
 int ApMon::sendParameter(char *clusterName, char *nodeName,
-		char *paramName, int paramValue) throw(runtime_error) {
+		char *paramName, int paramValue) COND_THROW(runtime_error) {
   
   return sendParameter(clusterName, nodeName, paramName, XDR_INT32, 
 		    (char *)&paramValue);
 }
 
 int ApMon::sendParameter(char *clusterName, char *nodeName,
-		char *paramName, float paramValue) throw(runtime_error) {
+		char *paramName, float paramValue) COND_THROW(runtime_error) {
   
   return sendParameter(clusterName, nodeName, paramName, XDR_REAL32, 
 		    (char *)&paramValue);
 }
 
 int ApMon::sendParameter(char *clusterName, char *nodeName,
-		char *paramName, double paramValue) throw(runtime_error) {
+		char *paramName, double paramValue) COND_THROW(runtime_error) {
   
   return sendParameter(clusterName, nodeName, paramName, XDR_REAL64, 
 		    (char *)&paramValue);
 }
 
 int ApMon::sendParameter(char *clusterName, char *nodeName,
-		char *paramName, char *paramValue) throw(runtime_error) {
+		char *paramName, char *paramValue) COND_THROW(runtime_error) {
   
   return sendParameter(clusterName, nodeName, paramName, XDR_STRING, 
 		    paramValue);
@@ -804,7 +804,7 @@ int ApMon::sendParameter(char *clusterName, char *nodeName,
 
 void ApMon::encodeParams(int nParams, char **paramNames, int *valueTypes, 
 			char **paramValues, int timestamp) 
-  throw(runtime_error){
+  COND_THROW(runtime_error){
   XDR xdrs; /* XDR handle. */
   int i, effectiveNParams;
 
@@ -1289,7 +1289,7 @@ void ApMon::setBackgroundThread(bool val) {
 }
 
 void ApMon::addJobToMonitor(long pid, char *workdir, char *clusterName,
-			    char *nodeName) throw(runtime_error) {
+			    char *nodeName) COND_THROW(runtime_error) {
   if (nMonJobs >= MAX_MONITORED_JOBS)
     throw runtime_error("[ addJobToMonitor() ] Maximum number of jobs that can be monitored exceeded.");
   MonitoredJob job;
@@ -1312,7 +1312,7 @@ void ApMon::addJobToMonitor(long pid, char *workdir, char *clusterName,
   monJobs[nMonJobs++] = job;
 }
 
-void ApMon::removeJobToMonitor(long pid) throw(runtime_error) {
+void ApMon::removeJobToMonitor(long pid) COND_THROW(runtime_error) {
   int i, j;
   char msg[100];
 
@@ -1363,7 +1363,7 @@ void ApMon::setMaxMsgRate(int maxRate) {
     this -> maxMsgRate  = maxRate;
 }
 
-void ApMon::initSocket() throw(runtime_error) {
+void ApMon::initSocket() COND_THROW(runtime_error) {
   int optval1 = 1;
   struct timeval optval2; 
   int ret1 = 0, ret2 = 0, ret3 = 0;
@@ -1408,7 +1408,7 @@ void ApMon::initSocket() throw(runtime_error) {
 
 void ApMon::parseConf(FILE *fp, int *nDestinations, char **destAddresses, 
 		     int *destPorts, char **destPasswds)
-  throw(runtime_error) {
+  COND_THROW(runtime_error) {
   int i, ch;
   char *line = (char *)malloc ((MAX_STRING_LEN1) * sizeof(char));
   char *tmp = NULL; 

@@ -53,7 +53,7 @@ void ProcUtils::getCPUUsage(ApMon& apm, double& cpuUsage,
 			       double& cpuSoftIRQ, double& cpuSteal,
 			       double& cpuGuest,
 			       int numCPUs)
-  throw (runtime_error, procutils_error) {
+  COND_THROW(runtime_error, procutils_error) {
 
 #ifndef WIN32
   FILE *fp1;
@@ -200,7 +200,7 @@ void ProcUtils::getCPUUsage(ApMon& apm, double& cpuUsage,
 void ProcUtils::getSwapPages(ApMon& apm, double& pagesIn, 
 			       double& pagesOut, double& swapIn, 
 			     double& swapOut) 
-  throw (runtime_error, procutils_error) {
+  COND_THROW(runtime_error, procutils_error) {
 #ifndef WIN32
   FILE *fp1;
   char line[MAX_STRING_LEN];
@@ -330,7 +330,7 @@ void ProcUtils::getSwapPages(ApMon& apm, double& pagesIn,
 
 void ProcUtils::getLoad(double &load1, double &load5, 
 	   double &load15, double &processes) 
-  throw(procutils_error) {
+  COND_THROW(procutils_error) {
 #ifndef WIN32
   double v1, v5, v15, activeProcs, totalProcs;
   FILE *fp1;
@@ -386,7 +386,7 @@ void ProcUtils::getLoad(double &load1, double &load5,
 }
 
 void ProcUtils::getProcesses(double& processes, double states[]) 
-  throw(runtime_error) {
+  COND_THROW(runtime_error) {
 #if defined(WIN32) || defined(__SUNOS)
   processes = RET_ERROR;
 
@@ -444,7 +444,7 @@ void ProcUtils::getProcesses(double& processes, double states[])
 }
 
 void ProcUtils::getSysMem(double &totalMem, double &totalSwap) 
-  throw(procutils_error) {
+  COND_THROW(procutils_error) {
 #ifndef WIN32
 
 char s1[20], line[MAX_STRING_LEN];
@@ -532,7 +532,7 @@ FILE *fp1;
 
 void ProcUtils::getMemUsed(double &usedMem, double& freeMem, 
 				  double &usedSwap, double& freeSwap) 
-  throw(procutils_error) {
+  COND_THROW(procutils_error) {
 #ifndef WIN32
 
   double mFree = 0, mTotal = 0, sFree = 0, sTotal = 0;
@@ -666,7 +666,7 @@ void ProcUtils::getMemUsed(double &usedMem, double& freeMem,
 }
 
 void ProcUtils::getNetworkInterfaces(int &nInterfaces, 
-		      char names[][20]) throw(procutils_error) {
+		      char names[][20]) COND_THROW(procutils_error) {
 
 nInterfaces = 0;
 
@@ -744,7 +744,7 @@ nInterfaces = 0;
 
 void ProcUtils::getNetInfo(ApMon& apm, double **vNetIn, 
 				  double **vNetOut, double **vNetErrs) 
-  throw(runtime_error, procutils_error) {
+  COND_THROW(runtime_error, procutils_error) {
 #ifndef WIN32
   double *netIn, *netOut, *netErrs, bytesReceived = 0, bytesSent = 0;
   int errs = 0;
@@ -910,7 +910,7 @@ void ProcUtils::getNetInfo(ApMon& apm, double **vNetIn,
 #endif
  }
 
-int ProcUtils::getNumCPUs() throw(procutils_error) {
+int ProcUtils::getNumCPUs() COND_THROW(procutils_error) {
 #ifdef WIN32
 	return 0;
 #else
@@ -946,7 +946,7 @@ int ProcUtils::getNumCPUs() throw(procutils_error) {
 #endif
 }
 
-void ProcUtils::getCPUInfo(ApMon& apm) throw(procutils_error) {
+void ProcUtils::getCPUInfo(ApMon& apm) COND_THROW(procutils_error) {
 #ifndef WIN32
 #ifndef __SUNOS
   double freq = 0;
@@ -1023,7 +1023,7 @@ void ProcUtils::getCPUInfo(ApMon& apm) throw(procutils_error) {
 /**
  * Returns the system boot time in milliseconds since the Epoch.
  */
-long ProcUtils::getBootTime() throw (procutils_error) {
+long ProcUtils::getBootTime() COND_THROW(procutils_error) {
 #if defined(WIN32) || defined(__SUNOS)
 	return 0;
 #else
@@ -1047,7 +1047,7 @@ long ProcUtils::getBootTime() throw (procutils_error) {
 }
 
 
-double ProcUtils::getUpTime() throw(procutils_error) {
+double ProcUtils::getUpTime() COND_THROW(procutils_error) {
 #ifdef WIN32
 	return 0;
 #else
@@ -1080,7 +1080,7 @@ double ProcUtils::getUpTime() throw(procutils_error) {
 #endif
 }
 
-int ProcUtils::countOpenFiles(long pid) throw(procutils_error) {
+int ProcUtils::countOpenFiles(long pid) COND_THROW(procutils_error) {
 #if defined(WIN32) || defined(__SUNOS)
 	return 0;
 #else
@@ -1119,7 +1119,7 @@ int ProcUtils::countOpenFiles(long pid) throw(procutils_error) {
 
 void ProcUtils::getNetstatInfo(ApMon& apm, double nsockets[], 
 				      double tcp_states[]) 
-  throw(runtime_error) {
+  COND_THROW(runtime_error) {
 
   // the states table keeps an entry for each alphabet letter, for efficient 
   // indexing

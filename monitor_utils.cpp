@@ -891,7 +891,7 @@ void ApMon::parseXApMonLine(char *line) {
 }
   
 long *apmon_mon_utils::getChildren(long pid, int& nChildren) 
-  throw(runtime_error) {
+  COND_THROW(runtime_error) {
 #ifdef WIN32
 	return 0;
 #else
@@ -1010,7 +1010,7 @@ long *apmon_mon_utils::getChildren(long pid, int& nChildren)
 #endif
 }
 
-void apmon_mon_utils::readJobInfo(long pid, PsInfo& info) throw(runtime_error) {
+void apmon_mon_utils::readJobInfo(long pid, PsInfo& info) COND_THROW(runtime_error) {
 #ifndef WIN32
   long *children;
   FILE *fp;
@@ -1213,7 +1213,7 @@ long apmon_mon_utils::parsePSTime(char *s) {
 }
 
 void apmon_mon_utils::readJobDiskUsage(MonitoredJob job, 
-				JobDirInfo& info) throw(runtime_error) {
+				JobDirInfo& info) COND_THROW(runtime_error) {
 #ifndef WIN32
   int status;
   pid_t cpid;

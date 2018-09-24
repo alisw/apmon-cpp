@@ -45,6 +45,8 @@
 #include <sys/wait.h>
 #endif
 
+#include <utils.h>
+
 using namespace std;
  
 /** Used when throwing exceptions from the proc_utils functions. When a
@@ -71,7 +73,7 @@ class ProcUtils {
 			       double& cpuSoftIRQ, double& cpuSteal,
 			       double& cpuGuest,
 			       int numCPUs)
-  throw (runtime_error, procutils_error);
+  COND_THROW(runtime_error, procutils_error);
 
    /** Calculates the parameters pages_in, pages_out, swap_in, swap_out,
       cpu_usage and stores them in the output parameters pagesIn, pagesOut,...
@@ -79,7 +81,7 @@ class ProcUtils {
   static void getSwapPages(ApMon& apm, double& pagesIn, 
 			       double& pagesOut, double& swapIn, 
 			     double& swapOut) 
-    throw (runtime_error, procutils_error);
+    COND_THROW(runtime_error, procutils_error);
 
   /**
    * Obtains the CPU load in the last 1, 5 and 15 mins and the number of 
@@ -87,7 +89,7 @@ class ProcUtils {
    * as parameters.
    */
   static void getLoad(double& load1, double& load5, double& load15, 
-	       double& processes) throw(procutils_error);
+	       double& processes) COND_THROW(procutils_error);
 
   /**
    * Obtains statistics about the total number of processes and
@@ -102,14 +104,14 @@ class ProcUtils {
    *   Z a defunct ("zombie") process
    */
   static void getProcesses(double& processes, double states[]) 
-    throw(runtime_error); 
+    COND_THROW(runtime_error); 
 
   /**
    * Obtains the total amount of memory and the total amount of swap (in KB)
    * and stores them in the variables given as parameters.
    */
   static void getSysMem(double& totalMem, double& totalSwap) 
-    throw(procutils_error);
+    COND_THROW(procutils_error);
 
   /**
    * Obtains the amount of memory and of swap currently in use and stores
@@ -117,7 +119,7 @@ class ProcUtils {
    */
   static void getMemUsed(double& usedMem, double&freeMem, double &usedSwap,
 		  double& freeSwap) 
-    throw(procutils_error);
+    COND_THROW(procutils_error);
 
   /**
    * Obtains the names of the network interfaces (excepting the loopback one).
@@ -127,7 +129,7 @@ class ProcUtils {
    * interfaces.
    */
   static void getNetworkInterfaces(int &nInterfaces, char names[][20]) 
-    throw(procutils_error);
+    COND_THROW(procutils_error);
 
   /**
    * Computes the input/output traffic for all the network interfaces,
@@ -143,7 +145,7 @@ class ProcUtils {
    */  
   static void getNetInfo(ApMon& apm, double **vNetIn, double **vNetOut, 
 		  double **vNetErrs) 
-    throw(runtime_error, procutils_error);
+    COND_THROW(runtime_error, procutils_error);
 
   /**
    * Obtains information about the currently opened sockets.
@@ -153,35 +155,35 @@ class ProcUtils {
    * of TCP sockets in each possible state (ESTABLISHED, LISTEN, ...).
    */
   static void getNetstatInfo(ApMon& apm, double nsockets[], double 
-			     tcp_states[]) throw(runtime_error);
+			     tcp_states[]) COND_THROW(runtime_error);
 
   /**
    * Returns the number of CPUs in the system.
    */
-  static int getNumCPUs() throw(procutils_error);
+  static int getNumCPUs() COND_THROW(procutils_error);
 
   /**
    * Obtains CPU information (vendor, model, frequency, bogomips) and fills the
    * corresponding fields in the ApMon object.
    */
-  static void getCPUInfo(ApMon& apm) throw(procutils_error);
+  static void getCPUInfo(ApMon& apm) COND_THROW(procutils_error);
 
   /**
    * Returns the system boot time, in seconds since the Epoch.
    */
-  static long getBootTime() throw (procutils_error);
+  static long getBootTime() COND_THROW(procutils_error);
 
   /**
    * Returns the system uptime in days.
    */
-  static double getUpTime() throw(procutils_error);
+  static double getUpTime() COND_THROW(procutils_error);
 
 
   /**
    * Obtains the number of opened file descriptors for the process with
    * the given pid.
    */
-  static int countOpenFiles(long pid) throw(procutils_error);
+  static int countOpenFiles(long pid) COND_THROW(procutils_error);
 };
 
 #endif
