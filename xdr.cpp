@@ -40,9 +40,6 @@
  * Mountain View, California  94043
  */
 
-/** This is only for WINDOWS. Linux and Mac already have this in <rpc/rpc.h> */
-#ifdef WIN32
-
 #if !defined(lint) && defined(SCCSIDS)
 static char sccsid[] = "@(#)xdr.c 1.35 87/08/12";
 #endif
@@ -61,7 +58,12 @@ static char sccsid[] = "@(#)xdr.c 1.35 87/08/12";
 #include <stdlib.h>             /* malloc,free */
 #include <string.h>             /* strlen() */
 
+#ifdef WIN32
 #include <Winsock2.h>
+#else
+#include <netinet/in.h>
+#endif
+
 #include "xdr.h"
 
 /*
@@ -239,7 +241,7 @@ bool_t
 xdr_opaque(register XDR *xdrs, caddr_t cp, register u_int cnt)
 {
         register u_int rndup;
-        static crud[BYTES_PER_XDR_UNIT];
+        static char* crud[BYTES_PER_XDR_UNIT];
 
         /*
          * if no data we are done
@@ -413,12 +415,12 @@ xdrmem_create(register XDR *xdrs, caddr_t addr, u_int size, enum xdr_op op)
         xdrs->x_handy = size;
 }
 
-static void
+void
 xdrmem_destroy(void *xdrs)
 {
 }
 
-static bool_t
+bool_t
 xdrmem_getlong(void *xdrsv, long *lp)
 {
 		register XDR *xdrs = (XDR *)xdrsv;
@@ -429,7 +431,7 @@ xdrmem_getlong(void *xdrsv, long *lp)
         return (TRUE);
 }
 
-static bool_t
+bool_t
 xdrmem_putlong(void *xdrsv, long *lp)
 {
 
@@ -441,7 +443,7 @@ xdrmem_putlong(void *xdrsv, long *lp)
         return (TRUE);
 }
 
-static bool_t
+bool_t
 xdrmem_getbytes(void *xdrsv, void *addr, register int len)
 {
 		register XDR *xdrs = (XDR *)xdrsv;
@@ -452,7 +454,7 @@ xdrmem_getbytes(void *xdrsv, void *addr, register int len)
         return (TRUE);
 }
 
-static bool_t
+bool_t
 xdrmem_putbytes(void *xdrsv, void *addr, register int len)
 {
 		register XDR *xdrs = (XDR *)xdrsv;
@@ -463,14 +465,14 @@ xdrmem_putbytes(void *xdrsv, void *addr, register int len)
         return (TRUE);
 }
 
-static u_int
+u_int
 xdrmem_getpos(void *xdrsv)
 {
 		register XDR *xdrs = (XDR *)xdrsv;
-        return ((u_int)xdrs->x_private - (u_int)xdrs->x_base);
+        return xdrs->x_private - xdrs->x_base;
 }
 
-static bool_t
+bool_t
 xdrmem_setpos(void *xdrsv, int pos)
 {
 		register XDR *xdrs = (XDR *)xdrsv;
@@ -480,11 +482,11 @@ xdrmem_setpos(void *xdrsv, int pos)
         if ((long)newaddr > (long)lastaddr)
                 return (FALSE);
         xdrs->x_private = newaddr;
-        xdrs->x_handy = (int)lastaddr - (int)newaddr;
+        xdrs->x_handy = lastaddr - newaddr;
         return (TRUE);
 }
 
-static long *
+long *
 xdrmem_inline(void *xdrsv, int len)
 {
         long *buf = 0;
@@ -496,5 +498,3 @@ xdrmem_inline(void *xdrsv, int len)
         }
         return (buf);
 }
-
-#endif  /* WIN32 */

@@ -47,9 +47,6 @@
  * Copyright (C) 1984, Sun Microsystems, Inc.
  */
 
-/** This is only for WINDOWS. Linux and Mac already have this in <rpc/rpc.h> */
-#ifdef WIN32	
-
 #ifndef __XDR_HEADER__
 #define __XDR_HEADER__
 
@@ -405,5 +402,3 @@ extern bool_t xdrrec_skiprecord();      /* move to beginning of next record *
 extern bool_t xdrrec_eof();             /* true if no more input */
 
 #endif /* __XDR_HEADER__ */
-
-#endif /* WIN32 */
