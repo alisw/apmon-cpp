@@ -156,8 +156,8 @@ enum xdr_op {
 typedef struct {
         enum xdr_op     x_op;           /* operation; fast additional param */
         struct xdr_ops {
-                bool_t  (*x_getlong)(void *, long *);   /* get a long from underlying stream */
-                bool_t  (*x_putlong)(void *, long *);   /* put a long to " */
+                bool_t  (*x_getlong)(void *, uint32_t *);   /* get a long from underlying stream */
+                bool_t  (*x_putlong)(void *, uint32_t *);   /* put a long to " */
                 bool_t  (*x_getbytes)(void *, void *, int );/* get some bytes from " */
                 bool_t  (*x_putbytes)(void *, void *, int);/* put some bytes to " */
                 u_int   (*x_getpostn)(void *);/* returns bytes off from beginning */
@@ -320,7 +320,7 @@ void xdrmem_create(XDR *xdrs, caddr_t addr, u_int size, enum xdr_op op);
 
 bool_t xdr_int(XDR *, int *);
 
-bool_t xdr_long(XDR *, long *);
+bool_t xdr_long(XDR *, uint32_t *);
 
 bool_t xdr_short(XDR *, short *);
 
