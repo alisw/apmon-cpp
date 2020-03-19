@@ -91,12 +91,12 @@
 #include <stdexcept>
 #include <ctype.h>
 #include <time.h>
+#include "xdr.h"
 
 #ifdef WIN32
 #include <Winsock2.h>
 #include <string.h>
 #include <process.h>
-#include "xdr.h"
 
 #else
 #include <sys/socket.h>
@@ -106,7 +106,6 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <net/if.h>
-#include <rpc/rpc.h>
 #include <netdb.h>
 #include <unistd.h>
 #include <pthread.h>
