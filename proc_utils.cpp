@@ -108,7 +108,7 @@ void ProcUtils::getCPUUsage(ApMon& apm, double& cpuUsage,
 	break;
   }
   
-  if (line == NULL) {
+  if (line == 0) {
     fclose(fp1);
     return;
   }
@@ -429,7 +429,7 @@ void ProcUtils::getProcesses(double& processes, double states[]) {
   // indexing
   for (int i = 0; i < NLETTERS; i++)
     states[i] = 0.0;
-  while (fgets(buf, 10, pf) > 0) {
+  while (fgets(buf, 10, pf) != 0) {
     ch = buf[0];
     states[ch - 65]++;
     processes++;
@@ -1235,7 +1235,7 @@ void ProcUtils::getNetstatInfo(ApMon& apm, double nsockets[],
   
   nsockets[SOCK_ICM] = RET_ERROR;
 #else
-  while (fgets(buf, 200, pf) > 0) {
+  while (fgets(buf, 200, pf) != 0) {
     tmp = strtok_r(buf, " \t\n", &pbuf);
     if (strstr(tmp, "tcp") == tmp) {
       nsockets[SOCK_TCP]++;
